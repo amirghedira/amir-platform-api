@@ -28,6 +28,7 @@ exports.searchProject = (req, res) => {
 }
 exports.getProjects = (req, res) => {
     Project.find()
+        .select('name imagesurl date status filelink github summary technologie')
         .sort({ date: 1 })
         .exec()
         .then(result => {
@@ -44,7 +45,6 @@ exports.getProject = (req, res) => {
     Project.findOne({ _id: req.params.id }, {})
         .exec()
         .then(result => {
-            console.log(result)
             if (result)
                 res.status(200).json({ result })
             else

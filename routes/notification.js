@@ -1,10 +1,7 @@
 const express = require('express');
 const NotificationController = require('../controllers/Notification-controller');
-const bodyParser = require('body-parser');
 const checkAuth = require('../middlewares/checkAuth');
 const router = express.Router();
-router.use(bodyParser.json())
-router.use(bodyParser.urlencoded({ extended: true }))
 
 router.get('/', NotificationController.getNotifications)
 router.post('/', NotificationController.addNotification)

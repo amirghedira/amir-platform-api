@@ -11,6 +11,8 @@ const webpush = require('web-push')
 const bodyParser = require('body-parser')
 
 app.use(bodyParser.json())
+app.use(bodyParser.urlencoded({ extended: true }))
+
 app.use(express.static(path.join(__dirname, "client")))
 app.all("/*", function (req, res, next) {
     res.header('Access-Control-Allow-Origin', '*');
@@ -22,6 +24,9 @@ mongosse.connect(process.env.MONGO_INFO, {
     useUnifiedTopology: true,
     useNewUrlParser: true
 })
+    .then(res => {
+        console.log('connected to database')
+    })
 const publicVadidKey = 'BMUYV7TShfXpU5edFVCfBEO0JwC-kCujoxV6q4pp3WHipuDPF2OE4bMd4LYYsNjKdn9GMtIlxW6vMQinu9qBkUg';
 const privateKey = 'vw_UuoniFImREBrhv-eU3UewiDJg9vTfyAHnpPlVUWA'
 

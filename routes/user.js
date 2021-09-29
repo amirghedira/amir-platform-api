@@ -1,13 +1,8 @@
 const express = require('express');
 const router = express.Router();
-const bodyparser = require('body-parser');
 const checkAuth = require('../middlewares/checkAuth');
 const cloudinary = require('../middlewares/cloudinary');
 const UserController = require('../controllers/user-controller');
-
-router.use(bodyparser.urlencoded({ extended: true }));
-router.use(bodyparser.json());
-
 
 router.get('/connected-user', UserController.getConnectedUser)
 router.get('/', UserController.getUser);

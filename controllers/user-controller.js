@@ -237,15 +237,13 @@ exports.addSkill = (req, res) => {
         })
 
 }
-exports.deleteSkill = (req, res) => {
 
-    console.log(req.user.userid)
+exports.deleteSkill = (req, res) => {
     User.findOne({ _id: req.user.userid })
         .exec()
         .then(user => {
             const index = user.skills.findIndex(skill => { return skill._id.toString() === req.params.id })
             let imageurl = user.skills[index].icon.split('/')[7].split('.')[0];
-            console.log(imageurl)
             user.skills.splice(index, 1)
             user.save()
                 .then(result => {

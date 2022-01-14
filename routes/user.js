@@ -4,6 +4,7 @@ const checkAuth = require('../middlewares/checkAuth');
 const cloudinary = require('../middlewares/cloudinary');
 const UserController = require('../controllers/user-controller');
 
+
 router.get('/connected-user', UserController.getConnectedUser)
 router.get('/', UserController.getUser);
 router.patch('/', checkAuth, UserController.updateUser);

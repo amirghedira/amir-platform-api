@@ -5,7 +5,6 @@ const io = require('socket.io')(http)
 http.listen(process.env.PORT || 5000, () => {
 
     io.on('connection', (socket) => {
-        console.log(socket.id)
         socket.on('sendnotification', (notification) => {
             socket.broadcast.emit('sendnotification', notification)
         })

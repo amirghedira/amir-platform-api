@@ -18,7 +18,6 @@ exports.searchProject = (req, res) => {
         .sort({ date: 1 })
         .exec()
         .then(projects => {
-            console.log(projects.map(p => p.name))
             res.status(200).json({ projects })
         })
         .catch(err => {

@@ -45,6 +45,9 @@ app.use('/user', userRoutes)
 app.use('/topic', topicRoutes)
 app.use('/banned', bannedRoutes)
 app.use('/notification', notificationRoutes)
+app.get('/status',(req,res)=>{
+    res.status(200).json({alive:true,status:'ok'})
+})
 
 if (process.env.NODE_ENV === 'production') {
 

@@ -65,6 +65,7 @@ exports.addProject = (req, res) => {
         overview: req.body.overview,
         whatlearned: req.body.whatlearned,
         technologie: req.body.technologie,
+        documentation: req.body.documentation,
         commentsCount: 0,
         gitViewers: 0,
         downloadcount: 0,
@@ -99,19 +100,13 @@ exports.updateProject = (req, res) => {
         })
 }
 
-exports.deleteProject = (req, res) => {
-
-    req.body.files.forEach(element => {
-        cloudinary.uploader.destroy(element.split('/')[7].split('.')[0], (err) => {
+exports.deleteProject = async (req, res) => {
+    const project = await Project.findById(req.params.id)
+    project.imagesurl.forEach(image => {
+        cloudinary.uploader.destroy(image.split('/')[7].split('.')[0], (err) => {
         });
     });
-    Project.deleteOne({ _id: req.params.id })
-        .then(result => {
-            res.status(200).json(result)
-        })
-        .catch(err => {
-            res.status(404).json(err)
-        })
+    return res.status(200).json({ message: 'project successfully deleted' })
 
 }
 

@@ -20,6 +20,7 @@ app.all("/*", function (req, res, next) {
     res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization, Content-Length, X-Requested-With');
     next();
 });
+
 mongosse.connect(process.env.MONGO_INFO, {
     useUnifiedTopology: true,
     useNewUrlParser: true
@@ -45,8 +46,20 @@ app.use('/user', userRoutes)
 app.use('/topic', topicRoutes)
 app.use('/banned', bannedRoutes)
 app.use('/notification', notificationRoutes)
-app.get('/status',(req,res)=>{
-    res.status(200).json({alive:true,status:'ok'})
+app.get('/status', (req, res) => {
+    res.status(200).json({ alive: true, status: 'ok' })
+})
+
+const Project = require('./models/Project')
+app.get('/test', async (req, res) => {
+
+    const projects = await Project.find()
+    projects.forEach(async (project) => {
+        documentation = `# Overview \n ${project.overview} \n #Features / Technologies \n ${project.features} \nPlatform & Libraries \n ${project.platform} \n What I learned ?\n ${project.whatlearned}`
+        await Project.updateOne({ _id: project.id }, { documentation: documentation })
+    })
+    return res.status(200).json({ message: "done" })
+
 })
 
 if (process.env.NODE_ENV === 'production') {

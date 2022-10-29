@@ -3,7 +3,7 @@ services:
   amir_platform_api_prod:
     restart: always
     container_name: amir_platform_api_prod
-    image: rg.fr-par.scw.cloud/comworkio/comwork_cloud_api:${VERSION}
+    image: registry.gitlab.com/amir_platform_api_prod:${VERSION}
     networks:
       - amir_platform_api
     env_file: 

@@ -3,7 +3,7 @@ services:
   amir_platform_api_prod:
     restart: always
     container_name: amir_platform_api_prod
-    image: ${CI_REGISTRY_IMAGE}/amir_platform_api_prod:${VERSION}
+    image: ${CI_REGISTRY_IMAGE}/${IMAGE_NAME}:${VERSION}
     networks:
       - amir_platform_api
     env_file: 

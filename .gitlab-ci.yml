@@ -1,6 +1,6 @@
 stages:
   - build
-  # - deploy
+  - deploy
 
 build_image:
   stage: build
@@ -16,19 +16,19 @@ build_image:
 
 
 
-# deploy_image:
-#   stage: deploy
-#   needs:
-#     - build_image
-#     - scan_image
-#     - unittest
-#   script:
-#     - chmod +x ./ci/deploy.sh
-#     - ./ci/deploy.sh
-#   only:
-#     refs:
-#       - /^(main.*)$/
-#   tags:
-#     - imagesbuilder
+deploy_image:
+  stage: deploy
+  needs:
+    - build_image
+    - scan_image
+    - unittest
+  script:
+    - chmod +x ./ci/deploy.sh
+    - ./ci/deploy.sh
+  only:
+    refs:
+      - /^(main.*)$/
+  tags:
+    - imagesbuilder
 
 

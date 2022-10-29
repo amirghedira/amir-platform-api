@@ -2,6 +2,7 @@
 
 ENV_FILE=".env"
 
+VERSION="${CI_COMMIT_BRANCH}-${CI_COMMIT_SHORT_SHA}"
 
 echo "API_KEY=${API_KEY}" >> "${ENV_FILE}"
 echo "API_SECRET=${API_SECRET}" >> "${ENV_FILE}"

@@ -2,26 +2,24 @@ const User = require('../models/User');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const mongoose = require('mongoose')
-const cloudinary = require('../middlewares/cloudinary');
 const Notification = require('../models/Notification');
 const Project = require('../models/Project');
 const Banned = require('../models/Banned');
+const { s3delete } = require('../middlewares/S3Upload');
 
 
 exports.uploadCv = (req, res) => {
     User.findOne()
         .exec()
-        .then(user => {
+        .then(async (user) => {
             if (user.cvFile) {
                 let cvFileLink = user.cvFile.split('/')[7].split('.')[0];
-                cloudinary.uploader.destroy(cvFileLink, (result, err) => {
-                    if (err)
-                        console.log(err)
-                });
+                await s3delete(cvFileLink)
+
             }
-            User.updateOne({ _id: req.user.userid }, { $set: { cvFile: req.file.secure_url } })
+            User.updateOne({ _id: req.user.userid }, { $set: { cvFile: req.file.location } })
                 .then(() => {
-                    res.status(200).json({ fileUrl: req.file.secure_url })
+                    res.status(200).json({ fileUrl: req.file.location })
                 })
 
         })
@@ -147,14 +145,11 @@ exports.login = (req, res) => {
             })
         })
 }
-exports.updateProfileImg = (req, res) => {
-    cloudinary.uploader.destroy(req.body.oldimagelink, (result, err) => {
-        if (err)
-            console.log(err)
-    });
-    User.updateOne({ _id: req.user.userid }, { $set: { profileimage: req.file.secure_url } })
+exports.updateProfileImg = async (req, res) => {
+    await s3delete(req.body.oldimagelink)
+    User.updateOne({ _id: req.user.userid }, { $set: { profileimage: req.file.location } })
         .then(result => {
-            res.status(200).json({ imageurl: req.file.secure_url })
+            res.status(200).json({ imageurl: req.file.location })
         })
         .catch(err => {
             res.status(400).json(err)
@@ -162,14 +157,11 @@ exports.updateProfileImg = (req, res) => {
         })
 }
 
-exports.updateBackgroundImg = (req, res) => {
-    cloudinary.uploader.destroy(req.body.oldimagelink, (result, err) => {
-        if (err)
-            console.log(err)
-    });
-    User.updateOne({ _id: req.user.userid }, { $set: { backgroundimage: req.file.secure_url } })
+exports.updateBackgroundImg = async (req, res) => {
+    await s3delete(req.body.oldimagelink)
+    User.updateOne({ _id: req.user.userid }, { $set: { backgroundimage: req.file.location } })
         .then(result => {
-            res.status(200).json({ imageurl: req.file.secure_url })
+            res.status(200).json({ imageurl: req.file.location })
         })
         .catch(err => {
             res.status(500).json({ error: err })
@@ -177,20 +169,17 @@ exports.updateBackgroundImg = (req, res) => {
 }
 
 exports.updloadImages = (req, res) => {
-    User.updateOne({ _id: req.user.userid }, { $push: { images: req.file.secure_url } })
+    User.updateOne({ _id: req.user.userid }, { $push: { images: req.file.location } })
         .then(result => {
-            res.status(200).json({ imageurl: req.file.secure_url })
+            res.status(200).json({ imageurl: req.file.location })
         })
         .catch(err => {
             res.status(500).json({ error: err })
         })
 }
 
-exports.deleteImage = (req, res) => {
-    cloudinary.uploader.destroy(req.body.imagelink, (result, err) => {
-        if (err)
-            console.log(err)
-    });
+exports.deleteImage = async (req, res) => {
+    await s3delete(req.body.imagelink)
     User.updateOne({ _id: req.user.userid }, { images: req.body.images })
         .then(result => {
             res.status(200).json(result)
@@ -226,11 +215,11 @@ exports.addSkill = (req, res) => {
     User.updateOne({ _id: req.user.userid }, {
         $push: {
             skills:
-                { _id: id, icon: req.file.secure_url, description: req.body.description }
+                { _id: id, icon: req.file.location, description: req.body.description }
         }
     })
         .then(result => {
-            res.status(200).json({ skill: { _id: id, icon: req.file.secure_url, description: req.body.description } })
+            res.status(200).json({ skill: { _id: id, icon: req.file.location, description: req.body.description } })
         })
         .catch(err => {
             res.status(500).json({ error: err })
@@ -246,11 +235,8 @@ exports.deleteSkill = (req, res) => {
             let imageurl = user.skills[index].icon.split('/')[7].split('.')[0];
             user.skills.splice(index, 1)
             user.save()
-                .then(result => {
-                    cloudinary.uploader.destroy(imageurl, (result, err) => {
-                        if (err)
-                            console.log(err)
-                    });
+                .then(async (result) => {
+                    await s3delete(imageurl)
                     res.status(200).json({ skills: [...user.skills] })
 
                 })

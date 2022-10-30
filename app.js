@@ -1,7 +1,7 @@
 const express = require('express');
+const cors = require("cors");
 const mongosse = require('mongoose');
 const app = express();
-const path = require('path');
 const projectRoutes = require('./routes/project');
 const userRoutes = require('./routes/user')
 const topicRoutes = require('./routes/topic')
@@ -9,17 +9,32 @@ const bannedRoutes = require('./routes/banned')
 const notificationRoutes = require('./routes/notification')
 const webpush = require('web-push')
 const bodyParser = require('body-parser')
+const logger = require('./middlewares/logger.js');
+
+
+app.use('*', (req, res, next) => {
+    const ip = req.headers['x-forwarded-for'] || req.socket.remoteAddress
+    const location = lookup(ip)
+    logger('INFO', req.method, req.originalUrl, `request accepted from ${ip} from ${location?.country || 'NA'}, ${location?.city || 'NA'}`)
+    return next()
+})
+app.use("*", (req, res, next) => {
+    res.on('close', () => {
+        const ip = req.headers['x-forwarded-for'] || req.socket.remoteAddress
+        const location = lookup(ip)
+        logger('INFO', req.method, req.originalUrl, `response close for ${ip} from ${location?.country || 'NA'}, ${location?.city || 'NA'} with status ${res.statusCode}`)
+        req.removeAllListeners()
+    })
+    next()
+})
+
+// Enable CORS
+app.use(cors());
 
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: true }))
+app.disable('etag');
 
-app.use(express.static(path.join(__dirname, "client")))
-app.all("/*", function (req, res, next) {
-    res.header('Access-Control-Allow-Origin', '*');
-    res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,PATCH');
-    res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization, Content-Length, X-Requested-With');
-    next();
-});
 
 mongosse.connect(process.env.MONGO_INFO, {
     useUnifiedTopology: true,
@@ -49,26 +64,5 @@ app.use('/notification', notificationRoutes)
 app.get('/status', (req, res) => {
     res.status(200).json({ alive: true, status: 'ok' })
 })
-
-const Project = require('./models/Project')
-app.get('/test', async (req, res) => {
-
-    const projects = await Project.find()
-    projects.forEach(async (project) => {
-        documentation = `# Overview \n ${project.overview} \n #Features / Technologies \n ${project.features} \nPlatform & Libraries \n ${project.platform} \n What I learned ?\n ${project.whatlearned}`
-        await Project.updateOne({ _id: project.id }, { documentation: documentation })
-    })
-    return res.status(200).json({ message: "done" })
-
-})
-
-if (process.env.NODE_ENV === 'production') {
-
-    app.use(express.static('client/build'));
-    app.get('*', (req, res) => {
-        res.sendFile(path.resolve(__dirname, 'client', 'build', 'index.html'));
-    });
-}
-
 
 module.exports = app

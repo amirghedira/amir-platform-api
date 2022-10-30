@@ -3,7 +3,7 @@
 ENV_FILE=".env"
 
 export VERSION="${CI_COMMIT_BRANCH}-${CI_COMMIT_SHORT_SHA}"
-
+echo "VERSION=${VERSION}" >> "${ENV_FILE}"
 echo "API_KEY=${API_KEY}" >> "${ENV_FILE}"
 echo "API_SECRET=${API_SECRET}" >> "${ENV_FILE}"
 echo "CLOUDINARY_URL=${CLOUDINARY_URL}" >> "${ENV_FILE}"

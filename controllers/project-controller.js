@@ -1,6 +1,6 @@
 const Project = require('../models/Project');
-const cloudinary = require('../middlewares/cloudinary');
-const mongoose = require('mongoose')
+const mongoose = require('mongoose');
+const { s3delete } = require('../middlewares/S3Upload');
 
 
 exports.searchProject = (req, res) => {
@@ -54,7 +54,7 @@ exports.getProject = (req, res) => {
         })
 }
 exports.addProject = (req, res) => {
-    const urls = req.files.map(file => { return file.secure_url })
+    const urls = req.files.map(file => { return file.location })
     const id = new mongoose.Types.ObjectId();
     const date = new Date().toISOString();
     const product = new Project({
@@ -102,9 +102,8 @@ exports.updateProject = (req, res) => {
 
 exports.deleteProject = async (req, res) => {
     const project = await Project.findById(req.params.id)
-    project.imagesurl.forEach(image => {
-        cloudinary.uploader.destroy(image.split('/')[7].split('.')[0], (err) => {
-        });
+    project.imagesurl.forEach(async (image) => {
+        await s3delete(image.split('/')[7].split('.')[0]);
     });
     return res.status(200).json({ message: 'project successfully deleted' })
 
@@ -157,7 +156,7 @@ exports.deleteComment = (req, res) => {
 
 exports.addProjectImage = (req, res) => {
 
-    const urls = req.files.map(file => { return file.secure_url })
+    const urls = req.files.map(file => { return file.location })
     Project.updateOne({ _id: req.params.id }, { $push: { imagesurl: urls } })
         .then(result => {
             res.status(200).json({ imageurls: urls })
@@ -167,10 +166,9 @@ exports.addProjectImage = (req, res) => {
         })
 }
 
-exports.deleteProjectImage = (req, res) => {
+exports.deleteProjectImage = async (req, res) => {
 
-    cloudinary.uploader.destroy(req.body.imagetodelete.split('/')[7].split('.')[0], (err) => {
-    });
+    await s3delete(req.body.imagetodelete.split('/')[7].split('.')[0])
     Project.updateOne({ _id: req.params.id }, { $set: { imagesurl: req.body.newimages } })
         .then(result => {
             res.status(200).json({ result: 'done' })

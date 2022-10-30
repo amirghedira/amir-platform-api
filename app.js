@@ -10,23 +10,7 @@ const notificationRoutes = require('./routes/notification')
 const webpush = require('web-push')
 const bodyParser = require('body-parser')
 const logger = require('./middlewares/logger.js');
-
-
-app.use('*', (req, res, next) => {
-    const ip = req.headers['x-forwarded-for'] || req.socket.remoteAddress
-    const location = lookup(ip)
-    logger('INFO', req.method, req.originalUrl, `request accepted from ${ip} from ${location?.country || 'NA'}, ${location?.city || 'NA'}`)
-    return next()
-})
-app.use("*", (req, res, next) => {
-    res.on('close', () => {
-        const ip = req.headers['x-forwarded-for'] || req.socket.remoteAddress
-        const location = lookup(ip)
-        logger('INFO', req.method, req.originalUrl, `response close for ${ip} from ${location?.country || 'NA'}, ${location?.city || 'NA'} with status ${res.statusCode}`)
-        req.removeAllListeners()
-    })
-    next()
-})
+const { lookup } = require('geoip-lite')
 
 // Enable CORS
 app.use(cors());

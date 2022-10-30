@@ -4,6 +4,8 @@ services:
     restart: always
     container_name: amir_platform_api_prod
     image: ${CI_REGISTRY_IMAGE}/${IMAGE_NAME}:${VERSION}
+    volumes:
+      - ./api.log:/var/log/amir-platform.log
     networks:
       - amir_platform_api
     env_file: 

@@ -3,7 +3,7 @@ const slack = new Slack('https://hooks.slack.com/services/T048H296FU6/B048PL6D2C
 
 const sendSlackMessage = (message) => {
     slack.send({
-        text: logMsg,
+        text: message,
         channel: '#amir-platform-api',
         username: 'amir-platform-api'
     });

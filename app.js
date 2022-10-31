@@ -10,7 +10,9 @@ const notificationRoutes = require('./routes/notification')
 const webpush = require('web-push')
 const bodyParser = require('body-parser')
 const logger = require('./middlewares/logger.js');
-const { lookup } = require('geoip-lite')
+const { lookup } = require('geoip-lite');
+const sendSlackFeedback = require('./middlewares/slackFeedback');
+const { upload } = require('./middlewares/S3Upload');
 
 // Enable CORS
 app.use(cors());
@@ -57,6 +59,27 @@ app.post('/subscribe', (req, res) => {
         .catch(err => {
             console.log(err)
         })
+})
+
+app.post('/slack-feedback', async (req, res) => {
+
+    const feedbackMessage =
+        `
+    Title: ${req.body.fallback}
+    Link: ${req.body.title_link}
+    Content: ${req.body.text}
+    ${req.body.image_url ? `
+    image_url:${req.body.image_url}
+    `: ''}
+    `
+    sendSlackFeedback(feedbackMessage)
+    res.status(200).json({ message: 'message sent to slack' })
+})
+
+app.post('/upload', upload.array('images', 5), (req, res) => {
+    const fileLinks = req.files.map(file => file.location)
+    res.status(200).json({ fileLinks })
+
 })
 app.use('/project', (projectRoutes))
 app.use('/user', userRoutes)

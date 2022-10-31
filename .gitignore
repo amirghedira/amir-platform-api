@@ -3,3 +3,5 @@ node_modules
 .vscode
 nodemon.json
 alternate-s3.js
+api.log
+logs

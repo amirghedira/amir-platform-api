@@ -65,11 +65,11 @@ app.post('/slack-feedback', async (req, res) => {
 
     const feedbackMessage =
         `
-    Title: ${req.body.fallback}
-    Link: ${req.body.title_link}
-    Content: ${req.body.text}
-    ${req.body.image_url ? `
-    image_url:${req.body.image_url}
+Title: ${req.body.fallback}
+Link: ${req.body.title_link}
+Content: ${req.body.text}
+${req.body.image_url ? `
+Image: ${req.body.image_url}
     `: ''}
     `
     sendSlackFeedback(feedbackMessage)

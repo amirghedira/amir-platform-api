@@ -155,6 +155,7 @@ exports.updateProfileImg = async (req, res) => {
             res.status(400).json(err)
             console.log(err)
         })
+
 }
 
 exports.updateBackgroundImg = async (req, res) => {

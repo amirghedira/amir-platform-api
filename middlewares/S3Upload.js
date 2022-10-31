@@ -12,7 +12,17 @@ const s3Config = {
 
 };
 
-const s3 = new aws.S3(s3Config);
+aws.config.update({
+    accessKeyId: process.env.S3_IAM_USER_KEY,
+    secretAccessKey: process.env.S3_IAM_USER_SECRET,
+    Bucket: process.env.S3_BUCKET_NAME,
+    region: process.env.S3_REGION,
+    s3BucketEndpoint: true,
+    endpoint: process.env.S3_ENDPOINT
+
+});
+
+const s3 = new aws.S3();
 
 const upload = multer({
     storage: multerS3({
@@ -28,9 +38,9 @@ const upload = multer({
     })
 })
 const s3delete = async (fileLink) => {
-    const fileName = fileLink.split('/')[4]
+    const fileName = fileLink.split('/')[3]
     await s3.deleteObject({
-        Bucket: process.env.BUCKET_NAME,
+        Bucket: process.env.S3_BUCKET_NAME,
         Key: fileName
     }, function (err, data) {
         if (err) console.log(err, err.stack);

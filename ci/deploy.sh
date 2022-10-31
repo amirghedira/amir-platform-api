@@ -5,6 +5,7 @@ ENV_FILE=".env"
 export VERSION="${CI_COMMIT_BRANCH}-${CI_COMMIT_SHORT_SHA}"
 
 echo "ENV=production" >> "${ENV_FILE}"
+echo "SLACK_TOKEN=${SLACK_TOKEN}">> "${ENV_FILE}"
 echo "VERSION=${VERSION}" >> "${ENV_FILE}"
 echo "API_KEY=${API_KEY}" >> "${ENV_FILE}"
 echo "API_SECRET=${API_SECRET}" >> "${ENV_FILE}"

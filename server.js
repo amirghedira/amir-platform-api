@@ -1,11 +1,8 @@
 require('dotenv').config()
 const app = require('./app');
-const sendSlackMessage = require('./middlewares/slackNotification');
 const http = require('http').createServer(app);
 const io = require('socket.io')(http)
 http.listen(process.env.PORT || 5000, () => {
-    if (process.env.ENV == "production")
-        sendSlackMessage(`New Deployment of amir-platform api Version: ${process.env.VERSION}`)
     io.on('connection', (socket) => {
         socket.on('sendnotification', (notification) => {
             socket.broadcast.emit('sendnotification', notification)

@@ -1,6 +1,7 @@
 stages:
   - build
   - deploy
+  - notify
 
 build_image:
   stage: build
@@ -28,3 +29,14 @@ deploy_image:
     - imagesbuilder
 
 
+notify:
+  stage: notify
+  only:
+    refs:
+      - /^(main.*)$/
+
+  tags:
+    - imagesbuilder
+  script:
+    - chmod +x ./ci/notify.sh
+    - ./ci/notify.sh

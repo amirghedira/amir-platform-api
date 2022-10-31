@@ -1,5 +1,5 @@
 const Slack = require('node-slack');
-const slack = new Slack('https://hooks.slack.com/services/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', {});
+const slack = new Slack(`https://hooks.slack.com/services/${process.env.SLACK_TOKEN}`, {});
 
 const sendSlackMessage = (message) => {
     slack.send({

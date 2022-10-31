@@ -4,3 +4,4 @@ node_modules
 nodemon.json
 alternate-s3.js
 api.log
+logs

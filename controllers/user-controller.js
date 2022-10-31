@@ -13,7 +13,7 @@ exports.uploadCv = (req, res) => {
         .exec()
         .then(async (user) => {
             if (user.cvFile) {
-                let cvFileLink = user.cvFile.split('/')[7].split('.')[0];
+                let cvFileLink = user.cvFile.split('/')[4].split('.')[0];
                 await s3delete(cvFileLink)
 
             }
@@ -232,7 +232,7 @@ exports.deleteSkill = (req, res) => {
         .exec()
         .then(user => {
             const index = user.skills.findIndex(skill => { return skill._id.toString() === req.params.id })
-            let imageurl = user.skills[index].icon.split('/')[7].split('.')[0];
+            let imageurl = user.skills[index].icon.split('/')[4].split('.')[0];
             user.skills.splice(index, 1)
             user.save()
                 .then(async (result) => {

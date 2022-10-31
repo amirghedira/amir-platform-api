@@ -27,8 +27,8 @@ const upload = multer({
         }
     })
 })
-const s3delete = async (fileName) => {
-
+const s3delete = async (fileLink) => {
+    const fileName = fileLink.split('/')[4]
     await s3.deleteObject({
         Bucket: process.env.BUCKET_NAME,
         Key: fileName

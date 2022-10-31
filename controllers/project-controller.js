@@ -103,7 +103,7 @@ exports.updateProject = (req, res) => {
 exports.deleteProject = async (req, res) => {
     const project = await Project.findById(req.params.id)
     project.imagesurl.forEach(async (image) => {
-        await s3delete(image.split('/')[7].split('.')[0]);
+        await s3delete(image);
     });
     return res.status(200).json({ message: 'project successfully deleted' })
 
@@ -168,7 +168,7 @@ exports.addProjectImage = (req, res) => {
 
 exports.deleteProjectImage = async (req, res) => {
 
-    await s3delete(req.body.imagetodelete.split('/')[7].split('.')[0])
+    await s3delete(req.body.imagetodelete)
     Project.updateOne({ _id: req.params.id }, { $set: { imagesurl: req.body.newimages } })
         .then(result => {
             res.status(200).json({ result: 'done' })

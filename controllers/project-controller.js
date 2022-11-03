@@ -1,6 +1,7 @@
 const Project = require('../models/Project');
 const mongoose = require('mongoose');
 const { s3delete } = require('../middlewares/S3Upload');
+const updateGitRepoReadme = require('../middlewares/updateGitRepoReadme');
 
 
 exports.searchProject = (req, res) => {
@@ -88,16 +89,19 @@ exports.addProject = (req, res) => {
         })
 }
 
-exports.updateProject = (req, res) => {
-    let ops = {};
-    ops[req.body.propName] = req.body.value
-    Project.updateOne({ _id: req.params.id }, { $set: ops })
-        .then(result => {
-            res.status(200).json(result)
-        })
-        .catch(err => {
-            console.log(err)
-        })
+exports.updateProject = async (req, res) => {
+    try {
+        let ops = {};
+
+        ops[req.body.propName] = req.body.value
+        const project = await Project.findByIdAndUpdate(req.params.id, { $set: ops })
+        if (req.body.propName == "documentation") {
+            updateGitRepoReadme(project.github, req.body.value)
+        }
+    } catch (error) {
+        res.status(500).json({ error: err })
+
+    }
 }
 
 exports.deleteProject = async (req, res) => {

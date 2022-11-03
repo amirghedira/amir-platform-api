@@ -21,7 +21,6 @@ app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: true }))
 app.disable('etag');
 
-
 mongosse.connect(process.env.MONGO_INFO, {
     useUnifiedTopology: true,
     useNewUrlParser: true

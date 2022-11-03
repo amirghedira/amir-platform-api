@@ -12,7 +12,8 @@ const updateGitRepoReadme = (github_url, doc) => {
     const TOKEN = process.env.GITHUB_TOKEN
     const username = process.env.GITHUB_USERNAME
     const injected_remote = inject_git_credentials_to_url(github_url, username, TOKEN)
-    shell.exec(`../git_script.sh -r ${injected_remote} -c "${doc}"`)
+    const root_path = require('path').resolve('./')
+    shell.exec(`${root_path}/git_script.sh -r ${injected_remote} -c "${doc}"`)
 
 }
 

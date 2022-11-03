@@ -39,14 +39,14 @@ mongosse.connect(process.env.MONGO_INFO, {
 app.use('*', (req, res, next) => {
     const ip = req.headers['x-forwarded-for'] || req.socket.remoteAddress
     const location = lookup(ip)
-    logger('INFO', req.method, req.originalUrl, `request accepted from ${ip} from ${location?.country || 'NA'}, ${location?.city || 'NA'}`)
+    logger('DEBUG', req.method, req.originalUrl, `request accepted from ${ip} from ${location?.country || 'NA'}, ${location?.city || 'NA'}`)
     return next()
 })
 app.use("*", (req, res, next) => {
     res.on('close', () => {
         const ip = req.headers['x-forwarded-for'] || req.socket.remoteAddress
         const location = lookup(ip)
-        logger('INFO', req.method, req.originalUrl, `response close for ${ip} from ${location?.country || 'NA'}, ${location?.city || 'NA'} with status ${res.statusCode}`)
+        logger('DEBUG', req.method, req.originalUrl, `response close for ${ip} from ${location?.country || 'NA'}, ${location?.city || 'NA'} with status ${res.statusCode}`)
         req.removeAllListeners()
     })
     return next()

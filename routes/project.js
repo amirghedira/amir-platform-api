@@ -6,6 +6,8 @@ const { upload } = require('../middlewares/S3Upload');
 
 router.get('/', ProjectController.getProjects)
 router.get('/search', ProjectController.searchProject)
+router.get('/number', ProjectController.getProjectsLength)
+
 router.get('/:id', ProjectController.getProject)
 router.post('/', checkAuth, upload.array('projectimages', 20), ProjectController.addProject)
 router.patch('/addprojectimages/:id', checkAuth, upload.array('projectimages', 20), ProjectController.addProjectImage)

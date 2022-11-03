@@ -25,8 +25,9 @@ mongosse.connect(process.env.MONGO_INFO, {
     useUnifiedTopology: true,
     useNewUrlParser: true
 })
-    .then(res => {
+    .then(async (res) => {
         console.log('connected to database')
+
     })
 
 

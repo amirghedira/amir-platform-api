@@ -5,7 +5,8 @@ const UserController = require('../controllers/user-controller');
 const { upload } = require('../middlewares/S3Upload');
 
 
-router.get('/connected-user', UserController.getConnectedUser)
+router.get('/connected-user', checkAuth, UserController.getConnectedUser)
+router.get('/banned', UserController.getBannedUsers)
 router.get('/', UserController.getUser);
 router.patch('/', checkAuth, UserController.updateUser);
 router.patch('/updatepassword', checkAuth, UserController.updatePassword);

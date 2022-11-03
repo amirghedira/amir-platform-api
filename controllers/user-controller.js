@@ -41,14 +41,21 @@ exports.getUser = (req, res) => {
 
 }
 
+exports.getBannedUsers = async (req, res) => {
+    try {
+        const banned = await Banned.find()
+        res.status(200).json({ banned })
+    } catch (error) {
+        res.status(500).json({ error })
+    }
+}
+
 exports.getConnectedUser = async (req, res) => {
 
     try {
         const user = await User.findOne()
         const notifications = await Notification.find()
-        const projects = await Project.find()
-        const banned = await Banned.find()
-        res.status(200).json({ user, notifications, projects, banned })
+        res.status(200).json({ user, notifications })
     } catch (error) {
         res.status(500).json({ error })
     }

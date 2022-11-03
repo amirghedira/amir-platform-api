@@ -16,6 +16,7 @@ exports.searchProject = (req, res) => {
             }
         ]
     })
+        .populate('addedBy')
         .sort({ date: 1 })
         .exec()
         .then(projects => {
@@ -26,8 +27,21 @@ exports.searchProject = (req, res) => {
             res.status(500).json({ err })
         })
 }
+
+exports.getProjectsLength = async (req, res) => {
+    try {
+
+        const projects = await Project.find()
+
+        res.status(200).json({ projects: projects.length })
+    } catch (error) {
+        res.status(500).json({ error: err })
+
+    }
+}
 exports.getProjects = (req, res) => {
     Project.find()
+        .populate('addedBy')
         .select('name imagesurl date status filelink github summary technologie')
         .sort({ date: 1 })
         .exec()

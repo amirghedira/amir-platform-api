@@ -14,6 +14,7 @@ const ProjectSchema = mongoose.Schema({
     summary: { type: String, },
     platform: { type: String, },
     features: { type: String, },
+    addedBy: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
     whatlearned: { type: String },
     github: { type: String },
     filelink: { type: String },

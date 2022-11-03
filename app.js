@@ -13,6 +13,8 @@ const logger = require('./middlewares/logger.js');
 const { lookup } = require('geoip-lite');
 const sendSlackFeedback = require('./middlewares/slackFeedback');
 const { upload } = require('./middlewares/S3Upload');
+const backup_database = require('./utils/backupDB');
+const cron = require('node-cron');
 
 // Enable CORS
 app.use(cors());
@@ -27,7 +29,10 @@ mongosse.connect(process.env.MONGO_INFO, {
 })
     .then(async (res) => {
         console.log('connected to database')
-
+        cron.schedule('0 0 0 * * *', async () => {
+            logger("INFO", "", "", "Back up database into S3")
+            await backup_database()
+        });
     })
 
 
@@ -79,7 +84,6 @@ Image: ${req.body.image_url}
 app.post('/upload', upload.array('images', 5), (req, res) => {
     const fileLinks = req.files.map(file => file.location)
     res.status(200).json({ fileLinks })
-
 })
 app.use('/project', (projectRoutes))
 app.use('/user', userRoutes)

@@ -98,6 +98,7 @@ exports.updateProject = async (req, res) => {
         if (req.body.propName == "documentation") {
             updateGitRepoReadme(project.github, req.body.value)
         }
+        res.status(200).json({ message: "project updated" })
     } catch (error) {
         res.status(500).json({ error: err })
 

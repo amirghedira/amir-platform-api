@@ -30,7 +30,6 @@ mongosse.connect(process.env.MONGO_INFO, {
     .then(async (res) => {
         console.log('connected to database')
         cron.schedule('0 0 0 * * *', async () => {
-            logger("INFO", "", "", "Back up database into S3")
             await backup_database()
         });
     })
@@ -65,6 +64,7 @@ app.post('/subscribe', (req, res) => {
             console.log(err)
         })
 })
+
 
 app.post('/slack-feedback', async (req, res) => {
 

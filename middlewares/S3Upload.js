@@ -7,8 +7,6 @@ aws.config.update({
     secretAccessKey: process.env.S3_IAM_USER_SECRET,
     Bucket: process.env.S3_BUCKET_NAME,
     region: process.env.S3_REGION,
-    s3BucketEndpoint: true,
-    endpoint: process.env.S3_ENDPOINT
 
 });
 

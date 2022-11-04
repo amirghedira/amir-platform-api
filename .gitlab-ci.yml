@@ -1,15 +1,41 @@
 stages:
+  - mirror
   - build
   - deploy
   - notify
   - cleanup
+
+
+mirror:
+  stage: mirror
+  only:
+    refs:
+      - /^(main.*)$/
+  script:
+    - chmod +x ./ci/deliver.sh
+    - ./ci/mirror.sh
+  tags:
+    - imagesbuilder
+
+
 
 build_image:
   stage: build
   only:
     refs:
       - /^(main.*)$/
-
+    changes:
+      - controllers/**/**
+      - middlewares/**/**
+      - models/**/**
+      - routes/**/**
+      - utils/**/**
+      - app.js
+      - server.js
+      - Dockerfile
+      - docker-compose-build.yml
+      - docker-compose.yml
+      - git_script.sh
   tags:
     - imagesbuilder
   script:
@@ -26,6 +52,18 @@ deploy_image:
   only:
     refs:
       - /^(main.*)$/
+    changes:
+      - controllers/**/**
+      - middlewares/**/**
+      - models/**/**
+      - routes/**/**
+      - utils/**/**
+      - app.js
+      - server.js
+      - Dockerfile
+      - docker-compose-build.yml
+      - docker-compose.yml
+      - git_script.sh
   tags:
     - imagesbuilder
 
@@ -35,6 +73,18 @@ notify:
   only:
     refs:
       - /^(main.*)$/
+    changes:
+      - controllers/**/**
+      - middlewares/**/**
+      - models/**/**
+      - routes/**/**
+      - utils/**/**
+      - app.js
+      - server.js
+      - Dockerfile
+      - docker-compose-build.yml
+      - docker-compose.yml
+      - git_script.sh
 
   tags:
     - imagesbuilder
@@ -48,6 +98,18 @@ cleanup:
   only:
     refs:
       - /^(main.*)$/
+    changes:
+      - controllers/**/**
+      - middlewares/**/**
+      - models/**/**
+      - routes/**/**
+      - utils/**/**
+      - app.js
+      - server.js
+      - Dockerfile
+      - docker-compose-build.yml
+      - docker-compose.yml
+      - git_script.sh
 
   tags:
     - imagesbuilder

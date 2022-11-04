@@ -30,8 +30,5 @@
         "shelljs": "^0.8.5",
         "socket.io": "^2.5.0",
         "web-push": "^3.4.3"
-    },
-    "engines": {
-        "node": "v16.9.1"
     }
 }

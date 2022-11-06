@@ -126,6 +126,7 @@ exports.deleteProject = async (req, res) => {
     project.imagesurl.forEach(async (image) => {
         await s3delete(image);
     });
+    await Project.deleteOne({ _id: project._id })
     return res.status(200).json({ message: 'project successfully deleted' })
 
 }

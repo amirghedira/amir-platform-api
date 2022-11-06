@@ -81,6 +81,7 @@ exports.addProject = (req, res) => {
         whatlearned: req.body.whatlearned,
         technologie: req.body.technologie,
         documentation: req.body.documentation,
+        visibility: req.body.visibility,
         commentsCount: 0,
         gitViewers: 0,
         downloadcount: 0,

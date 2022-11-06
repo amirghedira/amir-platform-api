@@ -17,9 +17,7 @@ const upload = multer({
         s3: s3,
         bucket: process.env.S3_BUCKET_NAME,
         acl: 'public-read',
-        metadata: (req, file, cb) => {
-            cb(null, { fieldName: file.fieldname })
-        },
+        contentType: multerS3.AUTO_CONTENT_TYPE,
         key: (req, file, cb) => {
             cb(null, `${Date.now().toString()}-${file.originalname}`)
         }
@@ -31,9 +29,7 @@ const uploadUserImages = multer({
         s3: s3,
         bucket: process.env.S3_BUCKET_NAME,
         acl: 'public-read',
-        metadata: (req, file, cb) => {
-            cb(null, { fieldName: file.fieldname })
-        },
+        contentType: multerS3.AUTO_CONTENT_TYPE,
         key: (req, file, cb) => {
             cb(null, `user/${Date.now().toString()}-${file.originalname}`)
         }
@@ -45,23 +41,20 @@ const uploadSlackImages = multer({
         s3: s3,
         bucket: process.env.S3_BUCKET_NAME,
         acl: 'public-read',
-        metadata: (req, file, cb) => {
-            cb(null, { fieldName: file.fieldname })
-        },
+        contentType: multerS3.AUTO_CONTENT_TYPE,
         key: (req, file, cb) => {
             cb(null, `slack/${Date.now().toString()}-${file.originalname}`)
         }
     })
 })
 
+
 const uploadProjectImages = multer({
     storage: multerS3({
         s3: s3,
         bucket: process.env.S3_BUCKET_NAME,
         acl: 'public-read',
-        metadata: (req, file, cb) => {
-            cb(null, { fieldName: file.fieldname })
-        },
+        contentType: multerS3.AUTO_CONTENT_TYPE,
         key: (req, file, cb) => {
             cb(null, `project/${Date.now().toString()}-${file.originalname}`)
         }

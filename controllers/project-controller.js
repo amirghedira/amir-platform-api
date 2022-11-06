@@ -42,7 +42,7 @@ exports.getProjectsLength = async (req, res) => {
 exports.getProjects = (req, res) => {
     Project.find()
         .populate('addedBy')
-        .select('name imagesurl date status filelink github summary technologie')
+        .select('name imagesurl date status filelink github summary technologie visibility')
         .sort({ date: 1 })
         .exec()
         .then(result => {

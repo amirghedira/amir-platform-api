@@ -8,6 +8,7 @@ const ProjectSchema = mongoose.Schema({
     commentsCount: { type: Number, required: true },
     gitViewers: { type: Number, required: true },
     downloadcount: { type: Number, required: true },
+    visibility: { type: Boolean, default: true },
     documentation: { type: String, required: true },
     status: { type: String, required: true },
     overview: { type: String },

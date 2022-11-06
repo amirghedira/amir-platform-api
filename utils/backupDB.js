@@ -7,12 +7,12 @@ const Banned = require('../models/Banned')
 const fs = require('fs')
 const moment = require('moment')
 const backupFiles = ['users.json', 'projects.json', 'topics.json', 'notifications.json', 'banned.json']
-const logger = require('../middlewares/logger')
+const sendSlackMessage = require('../middlewares/slackNotification.js')
 const backup_database = async () => {
 
 
     const backup_date = moment(new Date()).format("YYYY-MM-DD")
-    logger("INFO", "", "", `Initiating database backup ${backup_date} into S3`)
+    sendSlackMessage(`Initiating database backup ${backup_date} into S3`)
     const users = await User.find()
     const projects = await Project.find()
     const topics = await Topic.find()
@@ -62,7 +62,7 @@ const cleanup_old_backups = () => {
         availableBackups.forEach(async (backup, index) => {
             if (index > 1) {
                 setTimeout(() => {
-                    logger("INFO", "", "", `Cleaning database backup ${backup} from S3`)
+                    sendSlackMessage(`Cleaning database backup ${backup} from S3`)
                     backupFiles.forEach(file => {
                         s3.deleteObject({
                             Bucket: process.env.S3_BUCKET_NAME,

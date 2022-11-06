@@ -12,7 +12,7 @@ const bodyParser = require('body-parser')
 const logger = require('./middlewares/logger.js');
 const { lookup } = require('geoip-lite');
 const sendSlackFeedback = require('./middlewares/slackFeedback');
-const { upload } = require('./middlewares/S3Upload');
+const { uploadSlackImages } = require('./middlewares/S3Upload');
 const backup_database = require('./utils/backupDB');
 const cron = require('node-cron');
 
@@ -81,7 +81,7 @@ Image: ${req.body.image_url}
     res.status(200).json({ message: 'message sent to slack' })
 })
 
-app.post('/upload', upload.array('images', 5), (req, res) => {
+app.post('/slack-upload', uploadSlackImages.array('images', 5), (req, res) => {
     const fileLinks = req.files.map(file => file.location)
     res.status(200).json({ fileLinks })
 })

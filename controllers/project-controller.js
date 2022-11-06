@@ -82,6 +82,7 @@ exports.addProject = (req, res) => {
         technologie: req.body.technologie,
         documentation: req.body.documentation,
         visibility: req.body.visibility,
+        addedBy: req.user.userid,
         commentsCount: 0,
         gitViewers: 0,
         downloadcount: 0,

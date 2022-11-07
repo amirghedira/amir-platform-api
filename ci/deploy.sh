@@ -17,6 +17,7 @@ echo "VERSION=${VERSION}" >> "${ENV_FILE}"
 echo "JWT_SECRET=${JWT_SECRET}" >> "${ENV_FILE}"
 echo "MONGO_INFO=${MONGO_INFO}" >> "${ENV_FILE}"
 
+mkdir logs
 
 docker login "${CI_REGISTRY}" --username "${CI_REGISTRY_USER}" --password "${CI_REGISTRY_PASSWORD}"
-docker-compose up -d --force-recreate
+sudo docker-compose up -d --force-recreate

@@ -20,4 +20,4 @@ echo "MONGO_INFO=${MONGO_INFO}" >> "${ENV_FILE}"
 mkdir logs
 
 docker login "${CI_REGISTRY}" --username "${CI_REGISTRY_USER}" --password "${CI_REGISTRY_PASSWORD}"
-sudo docker-compose up -d --force-recreate
+docker-compose up -d --force-recreate

@@ -5,7 +5,7 @@ services:
     container_name: amir_platform_api_prod
     image: ${CI_REGISTRY_IMAGE}/${IMAGE_NAME}:${VERSION}
     volumes:
-      - /app/logs:/var/log/amir-platform:z
+      -  ~/logs/amir-platform:/app/logs/:rw
     networks:
       - amir_platform_api
     env_file: 

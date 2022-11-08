@@ -1,5 +1,6 @@
 const Topic = require('../models/Topic');
 const mongoose = require('mongoose');
+const CheckConnectedUser = require('../utils/CheckConnectedUser');
 
 exports.getTopics = (req, res) => {
 
@@ -18,6 +19,7 @@ exports.getTopics = (req, res) => {
 exports.getQuestions = (req, res) => {
 
     Topic.find({ type: 'questions' })
+        .populate('addedBy')
         .select(' -__v')
         .exec()
         .then(contents => {
@@ -32,6 +34,7 @@ exports.getQuestions = (req, res) => {
 exports.getSuggestions = (req, res) => {
 
     Topic.find({ type: 'suggestions' })
+        .populate('addedBy')
         .select(' -__v')
         .exec()
         .then(contents => {
@@ -46,6 +49,8 @@ exports.getSuggestions = (req, res) => {
 exports.getTopic = (req, res) => {
 
     Topic.findById(req.params.id)
+        .populate('addedBy')
+        .populate("replies.addedBy")
         .exec()
         .then(result => {
             if (result)
@@ -60,11 +65,14 @@ exports.getTopic = (req, res) => {
 }
 
 exports.postTopic = async (req, res) => {
+
+    const currentUser = CheckConnectedUser(req)
     const topic = new Topic({
         ip: req.body.ip,
         title: req.body.title,
-        autor: req.body.autor,
+        autor: currentUser ? null : req.body.autor,
         content: req.body.content,
+        addedBy: currentUser?.userid,
         date: new Date().toISOString(),
         type: req.body.type,
         state: true,
@@ -76,6 +84,7 @@ exports.postTopic = async (req, res) => {
         createdtopic = await topic.save()
         res.status(200).json({ id: createdtopic._id })
     } catch (err) {
+        console.log(err)
         res.status(500).json({ error: err })
     }
 }
@@ -84,27 +93,28 @@ exports.postComment = async (req, res) => {
     try {
         let id = new mongoose.Types.ObjectId()
         let date = new Date().toISOString();
-        await Topic.updateOne({ _id: req.params.id }, { $push: { replies: { _id: id, ip: req.body.ip, autor: req.body.autor, content: req.body.content, date: date } } })
+        const currentUser = CheckConnectedUser(req)
+        await Topic.updateOne({ _id: req.params.id }, { $push: { replies: { _id: id, ip: req.body.ip, addedBy: currentUser?.userid, autor: currentUser ? null : req.body.autor, content: req.body.content, date: date } } })
         res.status(200).json({ date: date, id: id })
 
     } catch (err) {
+        console.log(err)
         res.status(500).json({ error: err })
 
     }
 
 }
 
-exports.deleteComment =
-    (req, res) => {
+exports.deleteComment = (req, res) => {
 
-        Topic.updateOne({ _id: req.params.id }, { $set: { replies: req.body.newreplies } })
-            .then(result => {
-                res.status(200).json({ result: 'done' })
-            })
-            .catch(err => {
-                res.status(500).json({ error: err })
-            })
-    }
+    Topic.updateOne({ _id: req.params.id }, { $set: { replies: req.body.newreplies } })
+        .then(result => {
+            res.status(200).json({ result: 'done' })
+        })
+        .catch(err => {
+            res.status(500).json({ error: err })
+        })
+}
 
 exports.editTopicState = (req, res) => {
 
@@ -134,6 +144,7 @@ exports.deleteTopic = (req, res) => {
             res.status(200).json({ result: 'done' })
         })
         .catch(err => {
+            console.log(err)
             res.status(500).json({ error: err })
         })
 }

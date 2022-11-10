@@ -81,4 +81,4 @@ This package allows you to push notifications after registering the service work
 To begin, I learned how to manipulate the database throw mongoose and to create models and schemas, and also how to perform queries, and fetching data and updating and removing data
 Besides, I learned webpush syntax and I knew it's ability to push notifications easily.
 In addition, Cloudinary which I used for the first time, I used in past Multer with local storage, but with Cloudinary and multer I learned how to store images in the cloud and deleting them with simple code, and also customize the images name (you can find all this is cloudinary.js in middlewares)
-About other libraries like express and bcrypt and jsonwebtoken I already use them in past and it's helpful to use them again and manipulating them deeply.
+About other libraries like express and bcrypt and jsonwebtoken I already use them in past and it's helpful to use them again and manipulating them deeply...

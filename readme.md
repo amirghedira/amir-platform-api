@@ -48,7 +48,7 @@ Is a library responsible to manage tokens, it generates tokens from a payload yo
 with it, also you can protect some routes using a middleware that checks the token, you can add more options to it like the expiration time, etc... check out the docs below
 
 
-[multer-storage-cloudinary](https://www.npmjs.com/package/multer-storage-cloudinary)/[multer](multer:https://www.npmjs.com/package/multer):
+[multer-storage-cloudinary](https://www.npmjs.com/package/multer-storage-cloudinary)/[multer](multer:(https://www.npmjs.com/package/multer):
 I used both of those libraries as a middleware to store data in [cloudinary](https://cloudinary.com) which is a cloud storage (storing only images and videos)
 You can use multer by its own to store files in your local storage, that's the default use case of multer.
 
@@ -73,12 +73,10 @@ This listener is responsible to receive a new notification when you emit it from
 
 [web-push](https://www.npmjs.com/package/web-push): 
 This package allows you to push notifications after registering the service worker in the front end.
-
-
  
 # What I learned ?
  I learned more things about each of those library I mentioned above.
 To begin, I learned how to manipulate the database throw mongoose and to create models and schemas, and also how to perform queries, and fetching data and updating and removing data
 Besides, I learned webpush syntax and I knew it's ability to push notifications easily.
 In addition, Cloudinary which I used for the first time, I used in past Multer with local storage, but with Cloudinary and multer I learned how to store images in the cloud and deleting them with simple code, and also customize the images name (you can find all this is cloudinary.js in middlewares)
-About other libraries like express and bcrypt and jsonwebtoken I already use them in past and it's helpful to use them again and manipulating them deeply;
+About other libraries like express and bcrypt and jsonwebtoken I already use them in past and it's helpful to use them again and manipulating them deeply...

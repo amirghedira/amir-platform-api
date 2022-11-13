@@ -4,6 +4,26 @@ and each route contains a specific handler.
 I have used 4 main routes, which are /user, /project, /banned, /topic.
 Each of these routes is configures thought different routes you can download the project and check each route. 
 
+
+# Launch the project
+To launch the backend, you have to first add a `.env` file in the root directory that will hold the environment variables of the backend. You can find a `.env.example` folder as reference for the environment variables used.
+Note that you need an S3 storage (for example AWS S3) that will be used in the backend as storage service.
+
+After adding a `.env` file, you have to install the NodeJS packages on the backend (the project holds both the frontend under the client folder and the backend in the root directory of the project)
+
+To install the backend Node packages, simply run:
+``` bash
+npm install
+```
+To run the backend server, run:
+``` bash
+npm start
+```
+To run the backend server in development mode, run:
+``` bash
+npm run dev
+```
+Note that the server will listen on port `3000`
  # Features / Technologies 
  There is not much to talk about features, this rest API is made to serve the front end with data 
 The 2 only features that exist are cloudinary and web push 

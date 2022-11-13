@@ -2,7 +2,7 @@
  As a back end, this rest API(MongoDB, Express, NodeJS), is managing HTTP requests coming from the front end and serving the data from Mongo database. Requests are sent to the backend in different routes 
 and each route contains a specific handler.
 I have used 4 main routes, which are /user, /project, /banned, /topic.
-Each of these routes is configures thought different routes you can download the project and check each route. 
+Each of these routes is holding different nested routes.
 
 
 # Launch the project
@@ -28,10 +28,10 @@ Note that the server will listen on port `3000`
  There is not much to talk about features, this rest API is made to serve the front end with data 
 The 2 only features that exist are cloudinary and web push 
 Actually, I used an external storage which is cloudinary to store the application's images, of course, the storage is limited. For that when I remove any picture or even when i change any picture I automatically delete the old one from the cloud , with that am saving space.
-Besides I used webpush to push notification into the client operating system, in this use-case, whenever a user comment a project or post a topic or reply to a post, a receive an instant notification in my operating system, this reduces the delay to respond to your questions or your suggestions. 
+Besides, I used webpush to push notification into the client operating system, in this use-case, whenever a user comment a project or post a topic or reply to a post, a receive an instant notification in my operating system, this reduces the delay to respond to your questions or your suggestions. 
  
 # Platform & Libraries 
- In this back end , i used well known libraries which are:
+ In this back end , i used well known libraries, which are:
 ```json
 {
         "bcrypt": "^4.0.1",
@@ -51,7 +51,7 @@ Besides I used webpush to push notification into the client operating system, in
 The first main libraries are:
 
 [nodemon](https://www.npmjs.com/package/nodemon):
-Is a very useful tool , actually with nodemon you don't need to stop the server and rerun it again whenever you update your code. Actually when you save changes the server restart automatically.Also with nodemon installed you can created a file named nodemon.json in which you store your environment variables (process.env.VARIABLE)
+It is a very useful tool, actually with nodemon you don't need to stop the server and rerun it again whenever you update your code. Actually, when you save changes, the server restart automatically. Also with nodemon installed you can create a file named nodemon.json in which you store your environment variables (process.env.VARIABLE)
 
 [Express](https://www.npmjs.com/package/express):
 Which is a framework of nodejs , which makes easier handling HTTP request and responses.
@@ -77,11 +77,11 @@ You can use multer by its own to store files in your local storage, that's the d
 Is a driver for cloudinary , responsible to connect and send requests to cloudinary, and provides multiple functionalities.
 
 [bcrypt](https://www.npmjs.com/package/bcrypt):
-Is a small library, that provides a secure hashing method that you can use to hash plain text passwords before storing them into the database, also it provides a method that compares the  hashed passwords and an entered password (plain text) 
+Is a small library, that provides a secure hashing method that you can use to hash plain text passwords before storing them into the database, also it provides a method that compares the hashed passwords and an entered password (plain text) 
 you can use this functionality in login handler.
 
 [socket.io](https://www.npmjs.com/package/socket.io):
-As i mentioned in the front end project, I used client-side socketio , in the back end you have to use socketio server-side to register your listeners, in the server and emit them or broadcast them into all the sockets connected to your website
+As I mentioned in the front end project, I used client-side socketio , in the back end you have to use socketio server-side to register your listeners, in the server and emit them or broadcast them into all the sockets connected to your website
 for example:
 ```javascript
  io.on('connection', (socket) => {
@@ -96,8 +96,8 @@ This listener is responsible to receive a new notification when you emit it from
 This package allows you to push notifications after registering the service worker in the front end.
  
 # What I learned ?
- I learned more things about each of those library I mentioned above.
-To begin, I learned how to manipulate the database throw mongoose and to create models and schemas, and also how to perform queries, and fetching data and updating and removing data
+ I learned more things about each of those libraries I mentioned above.
+To begin, I learned how to manipulate the database thought mongoose and to create models and schemas, and also how to perform queries, and fetching data and updating and removing data
 Besides, I learned webpush syntax and I knew it's ability to push notifications easily.
 In addition, Cloudinary which I used for the first time, I used in past Multer with local storage, but with Cloudinary and multer I learned how to store images in the cloud and deleting them with simple code, and also customize the images name (you can find all this is cloudinary.js in middlewares)
 About other libraries like express and bcrypt and jsonwebtoken I already use them in past and it's helpful to use them again and manipulating them deeply...

@@ -3,7 +3,8 @@
 and each route contains a specific handler.
 I have used 4 main routes, which are /user, /project, /banned, /topic.
 Each of these routes is configures thought different routes you can download the project and check each route. 
- #Features / Technologies 
+
+ # Features / Technologies 
  There is not much to talk about features, this rest API is made to serve the front end with data 
 The 2 only features that exist are cloudinary and web push 
 Actually, I used an external storage which is cloudinary to store the application's images, of course, the storage is limited. For that when I remove any picture or even when i change any picture I automatically delete the old one from the cloud , with that am saving space.

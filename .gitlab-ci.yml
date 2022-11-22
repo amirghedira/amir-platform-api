@@ -15,7 +15,7 @@ mirror:
     - chmod +x ./ci/deliver.sh
     - ./ci/mirror.sh
   tags:
-    - imagesbuilder
+    - amirplatform
 
 
 
@@ -69,7 +69,7 @@ deploy_image:
       - package.json
       - git_script.sh
   tags:
-    - imagesbuilder
+    - amirplatform
 
 
 notify:
@@ -93,7 +93,7 @@ notify:
       - git_script.sh
 
   tags:
-    - imagesbuilder
+    - amirplatform
   script:
     - chmod +x ./ci/notify.sh
     - ./ci/notify.sh
@@ -120,7 +120,7 @@ cleanup:
       - git_script.sh
 
   tags:
-    - imagesbuilder
+    - amirplatform
   script:
     - chmod +x ./ci/cleanup.sh
     - ./ci/cleanup.sh

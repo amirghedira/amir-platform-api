@@ -112,7 +112,8 @@ exports.updateProject = async (req, res) => {
         ops[req.body.propName] = req.body.value
         const project = await Project.findByIdAndUpdate(req.params.id, { $set: ops })
         if (req.body.propName == "documentation") {
-            updateGitRepoReadme(project.github, req.body.value)
+            if (project.github && project.github != "")
+                updateGitRepoReadme(project.github, req.body.value)
         }
         res.status(200).json({ message: "project updated" })
     } catch (error) {

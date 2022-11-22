@@ -70,7 +70,9 @@ deploy_image:
       - git_script.sh
   tags:
     - amirplatform
-
+  environment:
+    name: production
+    url: https://api.amirghedira.com
 
 notify:
   stage: notify

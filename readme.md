@@ -9,6 +9,16 @@ Each of these routes is holding different nested routes.
 To launch the backend, you have to first add a `.env` file in the root directory that will hold the environment variables of the backend. You can find a `.env.example` folder as reference for the environment variables used.
 Note that you need an S3 storage (for example AWS S3) that will be used in the backend as storage service.
 
+## Using Docker
+Note: Docker must be installed on your machine.
+
+To launch the project, simply run:
+```bash
+docker-compose -f docker-compose-local.yml up --build --force-recreate
+```
+
+## Manually
+
 After adding a `.env` file, you have to install the NodeJS packages on the backend 
 
 To install the backend Node packages, simply run:
@@ -61,7 +71,7 @@ is a mongodb driver in nodejs that provides a straight-forward, schema-based sol
 You can also use mongodb driver (default) it will work too but with different syntax and methodologies
 
 [body-parse](https://www.npmjs.com/package/body-parser):
-Is a library , that allow the backend to parse the body and get data from the request (you can't get data from req.body without this library)
+Is a library, that allow the backend to parse the body and get data from the request (you can't get data from req.body without this library)
 The other packages are optional, but they provide more functionality.
 
 [jsonwebtoken](https://www.npmjs.com/package/jsonwebtoken):

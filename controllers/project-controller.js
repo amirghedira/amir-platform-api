@@ -2,6 +2,7 @@ const Project = require('../models/Project');
 const mongoose = require('mongoose');
 const { s3delete } = require('../middlewares/S3Upload');
 const updateGitRepoReadme = require('../middlewares/updateGitRepoReadme');
+const CheckConnectedUser = require('../utils/CheckConnectedUser');
 
 
 exports.searchProject = (req, res) => {
@@ -57,6 +58,7 @@ exports.getProjects = (req, res) => {
 
 exports.getProject = (req, res) => {
     Project.findOne({ _id: req.params.id }, {})
+        .populate("comments.addedBy")
         .exec()
         .then(result => {
             if (result)
@@ -135,7 +137,8 @@ exports.deleteProject = async (req, res) => {
 exports.postComment = (req, res) => {
 
     const date = new Date().toISOString()
-    const newComment = { _id: new mongoose.Types.ObjectId(), ip: req.body.comment.ip, autor: req.body.comment.autor, content: req.body.comment.content, date: date }
+    const currentUser = CheckConnectedUser(req)
+    const newComment = { _id: new mongoose.Types.ObjectId(), ip: req.body.comment.ip, autor: currentUser ? null : req.body.comment.autor, content: req.body.comment.content, date: date, addedBy: currentUser?.userid }
     Project.updateMany({ _id: req.params.id }, { $push: { Comments: newComment }, $set: { commentsCount: req.body.commentsCount } })
         .then(result => {
             res.status(200).json({ _id: newComment._id, date: date })

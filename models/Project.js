@@ -21,11 +21,12 @@ const ProjectSchema = mongoose.Schema({
     filelink: { type: String },
     imagesurl: [],
     Comments: [{
-        _id: mongoose.Types.ObjectId,
-        ip: String,
-        autor: String,
-        date: Date,
-        content: String
+        _id: { type: mongoose.Schema.Types.ObjectId },
+        ip: { type: String },
+        autor: { type: String },
+        date: { type: Date },
+        addedBy: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
+        content: { type: String }
     }]
 
 })

@@ -3,8 +3,8 @@ const fs = require('fs')
 const sendSlackMessage = require('./slackNotification')
 const logger = (logLevel, method, path, message) => {
     const nowDate = moment(new Date()).format("DD-MMM-yyyy:HH:mm:ss")
-    const fileName = moment(new Date()).format("DD-MMM-yyyy")
-
+    const fileName = moment(new Date()).format("DD-MM-yyyy")
+    console.log(fileName)
     const logMsg = `${nowDate} [${logLevel}] ${method} ${path} : ${message}`
     console.log(logMsg)
     if (logLevel == 'ERROR' || logLevel == "INFO") {

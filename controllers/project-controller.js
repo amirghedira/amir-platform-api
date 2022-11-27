@@ -58,7 +58,7 @@ exports.getProjects = (req, res) => {
 
 exports.getProject = (req, res) => {
     Project.findOne({ _id: req.params.id }, {})
-        .populate("comments.addedBy")
+        .populate("Comments.addedBy")
         .exec()
         .then(result => {
             if (result)

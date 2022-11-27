@@ -2,21 +2,24 @@ const moment = require('moment')
 const fs = require('fs')
 const sendSlackMessage = require('./slackNotification')
 const logger = (logLevel, method, path, message) => {
-    const nowDate = moment(new Date()).format("DD-MMM-yyyy:hh:mm:ss")
+    const nowDate = moment(new Date()).format("DD-MMM-yyyy:HH:mm:ss")
+    const fileName = moment(new Date()).format("DD-MMM-yyyy")
+
     const logMsg = `${nowDate} [${logLevel}] ${method} ${path} : ${message}`
     console.log(logMsg)
-    if (logLevel === 'ERROR' || logLevel === "INFO") {
+    if (logLevel == 'ERROR' || logLevel == "INFO") {
         sendSlackMessage(logMsg)
     }
-    fs.appendFile('logs/api.log', `${logMsg}\n`, function (err) {
-        if (err) {
-            if (!fs.existsSync('logs')) {
-                fs.mkdirSync('logs');
+    if (process.env.ENV == 'production')
+        fs.appendFile(`logs/log-${fileName}.log`, `${logMsg}\n`, function (err) {
+            if (err) {
+                if (!fs.existsSync('logs')) {
+                    fs.mkdirSync('logs');
+                }
+            } else {
+                // done
             }
-        } else {
-            // done
-        }
-    })
+        })
 }
 
 

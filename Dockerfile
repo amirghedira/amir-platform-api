@@ -1,6 +1,6 @@
 FROM node:16-alpine
 
-
+ENV ENV="production"
 RUN apk update && apk upgrade && \
     apk add --no-cache bash git openssh
     

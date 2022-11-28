@@ -9,16 +9,18 @@ const logger = (logLevel, method, path, message) => {
     if (logLevel == 'ERROR' || logLevel == "INFO") {
         sendSlackMessage(logMsg)
     }
-    if (process.env.ENV == 'production')
-        fs.appendFile(`logs/log-${fileName}.log`, `${logMsg}\n`, function (err) {
-            if (err) {
-                if (!fs.existsSync('logs')) {
-                    fs.mkdirSync('logs');
-                }
-            } else {
-                // done
+    if (process.env.ENV != 'production')
+        return
+    fs.appendFile(`logs/log-${fileName}.log`, `${logMsg}\n`, function (err) {
+        if (err) {
+            if (!fs.existsSync('logs')) {
+                fs.mkdirSync('logs');
+                fs.appendFile(`logs/log-${fileName}.log`, `${logMsg}\n`, (err) => { })
             }
-        })
+        } else {
+            // done
+        }
+    })
 }
 
 

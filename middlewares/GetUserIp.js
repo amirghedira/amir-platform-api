@@ -1,4 +1,6 @@
 module.exports = (req, res, next) => {
+    if (req.silence)
+        return next()
     if (req.headers.origin && req.hearders['X-User-IP']) {
         req.userIP = req.hearders['X-User-IP']
         return next()

@@ -37,6 +37,24 @@ mongosse.connect(process.env.MONGO_INFO, {
     })
 
 
+app.use('*', CheckSilencedRoutes, GetUserIp, (req, res, next) => {
+    if (req.silence)
+        return next()
+    const location = lookup(req.userIP)
+    logger('DEBUG', req.method, req.originalUrl, `request accepted from ${req.userIP} from ${location?.country || 'NA'}, ${location?.city || 'NA'}`)
+    return next()
+})
+app.use("*", CheckSilencedRoutes, GetUserIp, (req, res, next) => {
+    if (req.silence)
+        return next()
+    res.on('close', () => {
+        const location = lookup(req.userIP)
+        logger('DEBUG', req.method, req.originalUrl, `response close for ${req.userIP} from ${location?.country || 'NA'}, ${location?.city || 'NA'} with status ${res.statusCode}`)
+        req.removeAllListeners()
+    })
+    return next()
+})
+
 const publicVadidKey = 'BMUYV7TShfXpU5edFVCfBEO0JwC-kCujoxV6q4pp3WHipuDPF2OE4bMd4LYYsNjKdn9GMtIlxW6vMQinu9qBkUg';
 const privateKey = 'vw_UuoniFImREBrhv-eU3UewiDJg9vTfyAHnpPlVUWA'
 
@@ -80,17 +98,4 @@ app.get('/status', (req, res) => {
     res.status(200).json({ alive: true, status: 'ok' })
 })
 
-app.use('*', CheckSilencedRoutes, GetUserIp, (req, res, next) => {
-    const location = lookup(req.userIP)
-    logger('DEBUG', req.method, req.originalUrl, `request accepted from ${req.userIP} from ${location?.country || 'NA'}, ${location?.city || 'NA'}`)
-    return next()
-})
-app.use("*", CheckSilencedRoutes, GetUserIp, (req, res, next) => {
-    res.on('close', () => {
-        const location = lookup(req.userIP)
-        logger('DEBUG', req.method, req.originalUrl, `response close for ${req.userIP} from ${location?.country || 'NA'}, ${location?.city || 'NA'} with status ${res.statusCode}`)
-        req.removeAllListeners()
-    })
-    return next()
-})
 module.exports = app

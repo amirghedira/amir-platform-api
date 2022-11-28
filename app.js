@@ -9,12 +9,14 @@ const bannedRoutes = require('./routes/banned')
 const notificationRoutes = require('./routes/notification')
 const webpush = require('web-push')
 const bodyParser = require('body-parser')
-const logger = require('./middlewares/logger.js');
+const logger = require('./utils/logger.js');
 const { lookup } = require('geoip-lite');
-const sendSlackFeedback = require('./middlewares/slackFeedback');
+const sendSlackFeedback = require('./utils/slackFeedback');
 const { uploadSlackImages } = require('./middlewares/S3Upload');
 const backup_database = require('./utils/backupDB');
 const cron = require('node-cron');
+const GetUserIp = require('./middlewares/GetUserIp');
+const CheckSilencedRoutes = require('./middlewares/CheckSilencedRoutes');
 
 // Enable CORS
 app.use(cors());
@@ -35,26 +37,10 @@ mongosse.connect(process.env.MONGO_INFO, {
     })
 
 
-app.use('*', (req, res, next) => {
-    const ip = req.headers['x-forwarded-for'] || req.socket.remoteAddress
-    const location = lookup(ip)
-    logger('DEBUG', req.method, req.originalUrl, `request accepted from ${ip} from ${location?.country || 'NA'}, ${location?.city || 'NA'}`)
-    return next()
-})
-app.use("*", (req, res, next) => {
-    res.on('close', () => {
-        const ip = req.headers['x-forwarded-for'] || req.socket.remoteAddress
-        const location = lookup(ip)
-        logger('DEBUG', req.method, req.originalUrl, `response close for ${ip} from ${location?.country || 'NA'}, ${location?.city || 'NA'} with status ${res.statusCode}`)
-        req.removeAllListeners()
-    })
-    return next()
-})
-
 const publicVadidKey = 'BMUYV7TShfXpU5edFVCfBEO0JwC-kCujoxV6q4pp3WHipuDPF2OE4bMd4LYYsNjKdn9GMtIlxW6vMQinu9qBkUg';
 const privateKey = 'vw_UuoniFImREBrhv-eU3UewiDJg9vTfyAHnpPlVUWA'
 
-webpush.setVapidDetails('mailto:test@gmail.com', publicVadidKey, privateKey)
+webpush.setVapidDetails('mailto:amirghedira06@gmail.com', publicVadidKey, privateKey)
 app.post('/subscribe', (req, res) => {
     const subscription = req.body.subscription;
     res.status(201).json({ result: 'done' })
@@ -94,4 +80,17 @@ app.get('/status', (req, res) => {
     res.status(200).json({ alive: true, status: 'ok' })
 })
 
+app.use('*', CheckSilencedRoutes, GetUserIp, (req, res, next) => {
+    const location = lookup(req.userIP)
+    logger('DEBUG', req.method, req.originalUrl, `request accepted from ${req.userIP} from ${location?.country || 'NA'}, ${location?.city || 'NA'}`)
+    return next()
+})
+app.use("*", CheckSilencedRoutes, GetUserIp, (req, res, next) => {
+    res.on('close', () => {
+        const location = lookup(req.userIP)
+        logger('DEBUG', req.method, req.originalUrl, `response close for ${req.userIP} from ${location?.country || 'NA'}, ${location?.city || 'NA'} with status ${res.statusCode}`)
+        req.removeAllListeners()
+    })
+    return next()
+})
 module.exports = app

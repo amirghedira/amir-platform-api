@@ -1,7 +1,7 @@
 const Project = require('../models/Project');
 const mongoose = require('mongoose');
 const { s3delete } = require('../middlewares/S3Upload');
-const updateGitRepoReadme = require('../middlewares/updateGitRepoReadme');
+const updateGitRepoReadme = require('../utils/updateGitRepoReadme');
 const CheckConnectedUser = require('../utils/CheckConnectedUser');
 
 

@@ -7,8 +7,7 @@ const Banned = require('../models/Banned')
 const fs = require('fs')
 const moment = require('moment')
 const backupFiles = ['users.json', 'projects.json', 'topics.json', 'notifications.json', 'banned.json']
-const sendSlackMessage = require('../middlewares/slackNotification.js')
-const logger = require('../middlewares/logger.js')
+const logger = require('./logger.js')
 const backup_database = async () => {
 
 

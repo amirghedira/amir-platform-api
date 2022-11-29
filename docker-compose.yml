@@ -14,6 +14,14 @@ services:
       - .env
     ports:
       - "5000:5000"
+    deploy:
+      resources:
+          limits:
+            cpus: 0.30
+            memory: 120M
+          reservations:
+            cpus: 0.20
+            memory: 128M
 
 networks:
   amir_platform_api:

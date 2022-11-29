@@ -18,10 +18,10 @@ services:
       resources:
           limits:
             cpus: 0.30
-            memory: 130M
+            memory: 150M
           reservations:
             cpus: 0.20
-            memory: 128M
+            memory: 140M
 
 networks:
   amir_platform_api:

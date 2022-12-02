@@ -5,7 +5,6 @@ const Topic = require('../models/Topic')
 const Banned = require('../models/Banned')
 const fs = require('fs')
 const moment = require('moment')
-const backupFiles = ['users.json', 'projects.json', 'topics.json', 'notifications.json', 'banned.json']
 const logger = require('./logger.js')
 const aws = require('aws-sdk')
 const AdmZip = require("adm-zip");

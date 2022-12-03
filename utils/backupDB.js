@@ -48,9 +48,13 @@ const backup_database = async () => {
 
     }).promise()
         .then(res => {
+            console.log(res)
             fs.rm(backup_date, { recursive: true }, (err) => { })
             fs.unlinkSync(zipBackupFile)
             cleanup_old_backups()
+        })
+        .catch(err => {
+            console.log(err)
         })
 }
 

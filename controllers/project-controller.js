@@ -148,14 +148,19 @@ exports.postComment = (req, res) => {
         })
 }
 
-exports.updateDownloads = (req, res) => {
-    Project.updateOne({ _id: req.params.id }, { $set: { downloadcount: req.body.downloadcount } })
-        .then(result => {
-            res.status(200).json(result)
-        })
-        .catch(err => {
-            res.status(404).json(err)
-        })
+exports.updateDownloads = async (req, res) => {
+    try {
+        const project = await Project.findOne({ _id: req.params.id })
+        if (!project)
+            return res.status(404).json({ message: "project not found" })
+        const newDownloadCount = project.downloadcount + 1
+        await Project.updateOne({ _id: req.params.id }, { $set: { downloadcount: newDownloadCount } })
+        return res.status(200).json({ message: "updated download count", downloadcount: newDownloadCount })
+
+
+    } catch (error) {
+        return res.status(500).json({ message: error.message })
+    }
 }
 
 exports.updateGitViewers = async (req, res) => {

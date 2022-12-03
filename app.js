@@ -31,8 +31,8 @@ mongosse.connect(process.env.MONGO_INFO, {
 })
     .then(async (res) => {
         console.log('connected to database')
-        await backup_database()
         cron.schedule('0 0 0 * * *', async () => {
+            await backup_database()
         });
     })
 

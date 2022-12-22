@@ -13,8 +13,6 @@ const logger = require('./utils/logger.js');
 const { lookup } = require('geoip-lite');
 const sendSlackFeedback = require('./utils/slackFeedback');
 const { uploadSlackImages } = require('./middlewares/S3Upload');
-const backup_database = require('./utils/backupDB');
-const cron = require('node-cron');
 const GetUserIp = require('./middlewares/GetUserIp');
 const CheckSilencedRoutes = require('./middlewares/CheckSilencedRoutes');
 
@@ -31,9 +29,6 @@ mongosse.connect(process.env.MONGO_INFO, {
 })
     .then(async (res) => {
         console.log('connected to database')
-        cron.schedule('0 0 0 * * *', async () => {
-            await backup_database()
-        });
     })
 
 

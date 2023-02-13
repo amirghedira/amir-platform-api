@@ -28,7 +28,7 @@
         "node-slack": "^0.0.7",
         "nodemon": "^2.0.20",
         "shelljs": "^0.8.5",
-        "socket.io": "^2.5.0",
+        "socket.io": "^4.6.0",
         "web-push": "^3.4.3"
     }
 }

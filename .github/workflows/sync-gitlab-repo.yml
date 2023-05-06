@@ -10,7 +10,7 @@ jobs:
     steps:
     - name: print secrets
       run: |
-          echo $DEV_ENV_FILE | base64 -d > .env
+          echo $DEV_ENV_FILE | base64 | base64 -d > .env
           cat .env
       shell: bash
       env:

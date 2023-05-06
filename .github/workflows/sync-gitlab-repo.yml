@@ -10,8 +10,8 @@ jobs:
     steps:
     - name: print secrets
       run: |
-          echo $DEV_ENV_FILE > src/.env
-          cat src/.env
+          echo $DEV_ENV_FILE > .env
+          cat .env
       shell: bash
       env:
         DEV_ENV_FILE : ${{secrets.TARGET_TOKEN}}

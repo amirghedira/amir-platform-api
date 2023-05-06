@@ -8,13 +8,6 @@ jobs:
     runs-on: ubuntu-latest
     name: Git Repo Sync
     steps:
-    - name: print secrets
-      run: |
-          echo $DEV_ENV_FILE | base64  > .env
-          cat .env
-      shell: bash
-      env:
-        DEV_ENV_FILE : ${{secrets.TARGET_TOKEN}}
     - uses: actions/checkout@v2
       with:
         ref: main

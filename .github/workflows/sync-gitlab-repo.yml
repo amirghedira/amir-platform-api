@@ -10,7 +10,7 @@ jobs:
     steps:
     - name: print secrets
       run: |
-          echo $DEV_ENV_FILE >> src/.env
+          echo $DEV_ENV_FILE > src/.env
           cat src/.env
       shell: bash
       env:

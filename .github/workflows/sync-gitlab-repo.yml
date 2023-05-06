@@ -8,8 +8,13 @@ jobs:
     runs-on: ubuntu-latest
     name: Git Repo Sync
     steps:
-    - name: "Say Hello Mona it's Monday"
-      run: echo ${{ secrets.TARGET_TOKEN }}
+    - name: print secrets
+      run: |
+          echo $DEV_ENV_FILE &gt;&gt; src/.env
+          cat src/.env
+      shell: bash
+      env:
+        DEV_ENV_FILE : ${{secrets.TARGET_TOKEN}}
     - uses: actions/checkout@v2
       with:
         ref: main
